@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Contrato (contract-first) do Web Service SOAP de Diagnóstico do HÉLIOS.
+  Este XSD é a fonte da verdade: o WSDL é gerado a partir dele em runtime
+  (Spring-WS DefaultWsdl11Definition). As classes JAXB espelham estes tipos.
+
+  Operações derivadas pelos sufixos Request/Response:
+    - diagnosticar        (processamento)
+    - consultarHistorico  (consulta)
+-->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+           xmlns:tns="http://helios.fiap.com.br/soap/diagnostico"
+           targetNamespace="http://helios.fiap.com.br/soap/diagnostico"
+           elementFormDefault="qualified">
+
+    <!-- ===== Operação: diagnosticar (processamento) ===== -->
+    <xs:element name="diagnosticarRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ativoId" type="xs:string"/>
+                <xs:element name="valorEnergia" type="xs:double"/>
+                <xs:element name="esperadoEnergia" type="xs:double"/>
+                <xs:element name="grauSujeira" type="xs:double"/>
+                <xs:element name="quedaGradual" type="xs:boolean"/>
+                <xs:element name="pontoQuente" type="xs:boolean"/>
+                <xs:element name="solBaixo" type="xs:boolean"/>
+                <xs:element name="frio" type="xs:boolean"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="diagnosticarResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="diagnostico" type="tns:diagnosticoType"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- ===== Operação: consultarHistorico (consulta) ===== -->
+    <xs:element name="consultarHistoricoRequest">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="ativoId" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:element name="consultarHistoricoResponse">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="diagnostico" type="tns:diagnosticoType"
+                            minOccurs="0" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+    <!-- ===== Tipo reutilizado nas duas respostas (reutilização SOA) ===== -->
+    <xs:complexType name="diagnosticoType">
+        <xs:sequence>
+            <xs:element name="ativoId" type="xs:string"/>
+            <xs:element name="causa" type="xs:string"/>
+            <xs:element name="confianca" type="xs:double"/>
+            <xs:element name="severidade" type="xs:string"/>
+            <xs:element name="acaoRecomendada" type="xs:string"/>
+            <xs:element name="intensidadeVibracao" type="xs:double" minOccurs="0"/>
+            <xs:element name="evidencia" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="timestamp" type="xs:string"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

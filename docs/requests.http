@@ -1,0 +1,74 @@
+### HÉLIOS · REST — requisições prontas
+# Use no VS Code (extensão "REST Client") ou IntelliJ HTTP Client.
+# Suba antes: helios-soap (:8081) e helios-rest (:8080).
+
+@host = http://localhost:8080
+@api = {{host}}/api
+
+### 1. Cadastrar painel (espera 201 + Location)
+POST {{api}}/paineis
+Content-Type: application/json
+
+{ "codigo": "PAINEL-A", "nome": "Painel A - Base Sul", "potenciaNominalW": 210.0, "latitude": -23.5, "longitude": -46.6 }
+
+### 2. Listar painéis (200)
+GET {{api}}/paineis
+
+### 3. Detalhar painel (200)
+GET {{api}}/paineis/1
+
+### 4. Atualizar painel (200)
+PUT {{api}}/paineis/1
+Content-Type: application/json
+
+{ "codigo": "PAINEL-A", "nome": "Painel A - atualizado", "potenciaNominalW": 225.0, "ativo": false }
+
+### 5. LOOP — telemetria SUJEIRA (200: causa SUJEIRA + comando VIBRAR + alerta)
+POST {{api}}/paineis/1/leituras
+Content-Type: application/json
+
+{ "valorEnergia": 142.0, "grauSujeira": 0.47, "quedaGradual": true, "pontoQuente": false }
+
+### 6. LOOP — telemetria DANO (200: causa DANO_FISICO, SEM comando, alerta)
+POST {{api}}/paineis/1/leituras
+Content-Type: application/json
+
+{ "valorEnergia": 120.0, "grauSujeira": 0.02, "quedaGradual": false, "pontoQuente": true }
+
+### 7. Histórico de diagnósticos do painel (200)
+GET {{api}}/paineis/1/diagnosticos
+
+### 8. Alertas em aberto (200)
+GET {{api}}/alertas?apenasAbertos=true
+
+### 9. Reconhecer alerta (200)
+PUT {{api}}/alertas/1/reconhecer
+
+# ---------- Casos de erro (evidência de validação/tratamento) ----------
+
+### 10. Validação: potência inválida (espera 400 com "campos")
+POST {{api}}/paineis
+Content-Type: application/json
+
+{ "codigo": "", "nome": "", "potenciaNominalW": -5 }
+
+### 11. Código duplicado (espera 409)
+POST {{api}}/paineis
+Content-Type: application/json
+
+{ "codigo": "PAINEL-A", "nome": "dup", "potenciaNominalW": 100 }
+
+### 12. JSON malformado (espera 400, mensagem neutra)
+POST {{api}}/paineis
+Content-Type: application/json
+
+{ nome:
+
+### 13. Id não numérico (espera 400)
+GET {{api}}/paineis/abc
+
+### 14. Recurso inexistente (espera 404)
+GET {{api}}/paineis/99999
+
+### 15. DELETE de painel COM histórico (espera 409)
+DELETE {{api}}/paineis/1

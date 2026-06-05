@@ -1,0 +1,46 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: helios-rest
+
+  # Banco de dados H2 em memória (zera a cada reinício — ideal para a demo)
+  datasource:
+    url: jdbc:h2:mem:helios;DB_CLOSE_DELAY=-1
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ''
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+  # Console web do H2 em http://localhost:8080/h2-console
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+# Swagger UI em http://localhost:8080/swagger-ui.html
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+# Integração do HÉLIOS
+helios:
+  # URL do Web Service SOAP de diagnóstico (helios-soap)
+  soap:
+    url: http://localhost:8081/ws
+  # API externa de ambiente: NASA POWER (irradiância solar + temperatura, via satélite).
+  # Gratuita e sem chave. Se a chamada falhar, o loop usa ambiente simulado.
+  ambiente:
+    nasa:
+      url: https://power.larc.nasa.gov/api/temporal/daily/point
+      limiar-irradiancia: 2.5   # kWh/m²/dia abaixo disso => solBaixo
+      limiar-frio: 10.0         # °C abaixo disso => frio

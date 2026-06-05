@@ -1,0 +1,9 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: helios-soap
+
+# O endpoint SOAP e o WSDL serão configurados na Sprint 1 (contract-first).
+# Por enquanto o módulo apenas sobe para validar o CP0.

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- POM pai do projeto HÉLIOS (módulo SOA da Global Solution 2026.1) -->
+    <groupId>br.com.fiap.helios</groupId>
+    <artifactId>helios-soa</artifactId>
+    <version>1.0.0</version>
+    <packaging>pom</packaging>
+
+    <name>HELIOS SOA</name>
+    <description>Arquitetura orientada a serviços do HELIOS: API REST + Web Service SOAP</description>
+
+    <!-- Herda a gestão de dependências do Spring Boot -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.5</version>
+        <relativePath/>
+    </parent>
+
+    <modules>
+        <module>helios-soap</module>
+        <module>helios-rest</module>
+    </modules>
+
+    <properties>
+        <java.version>21</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <springdoc.version>2.6.0</springdoc.version>
+    </properties>
+
+</project>
